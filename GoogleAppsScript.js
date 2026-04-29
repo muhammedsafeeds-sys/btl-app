@@ -209,9 +209,9 @@ function setupAgentSummary(ss) {
   var r = "'Raw Submissions'";
   sheet.getRange(1, 1, 1, 3).setValues([['Agent Name', 'Total Visits', 'Last Active']]);
   styleRow(sheet, 1);
-  sheet.getRange(2, 1).setFormula('=IFERROR(UNIQUE(FILTER(' + r + '!B2:B,' + r + '!B2:B<>"")),"-")');
-  sheet.getRange(2, 2).setFormula('=IFERROR(COUNTIF(' + r + '!B2:B,A2),"")');
-  sheet.getRange(2, 3).setFormula('=IFERROR(TEXT(MAXIFS(' + r + '!A2:A,' + r + '!B2:B,A2),"dd mmm yyyy hh:mm"),"")');
+  sheet.getRange(2, 1).setFormula('=IFERROR(SORT(UNIQUE(FILTER(' + r + '!B2:B,' + r + '!B2:B<>""))),"")');
+  sheet.getRange(2, 2).setFormula('=ARRAYFORMULA(IF(A2:A="",,COUNTIF(' + r + '!B2:B,A2:A)))');
+  sheet.getRange(2, 3).setFormula('=MAP(A2:A,LAMBDA(agent,IF(agent="",,IFERROR(INDEX(SORT(FILTER({' + r + '!A2:A},' + r + '!B2:B=agent),1,FALSE),1,1),""))))');
   sheet.setColumnWidth(1, 200);
   sheet.setColumnWidth(2, 120);
   sheet.setColumnWidth(3, 200);
@@ -227,13 +227,13 @@ function setupApartmentMaster(ss) {
   var hdrs = ['Apartment Name', 'Last Visit', 'Agent', 'Zone', 'Visits', 'Avg Quoted (Rs)', 'Maps Link'];
   sheet.getRange(1, 1, 1, hdrs.length).setValues([hdrs]);
   styleRow(sheet, 1);
-  sheet.getRange(2, 1).setFormula('=IFERROR(UNIQUE(FILTER(' + r + '!C2:C,' + r + '!C2:C<>"")),"-")');
-  sheet.getRange(2, 2).setFormula('=IFERROR(TEXT(MAXIFS(' + r + '!A2:A,' + r + '!C2:C,A2),"dd mmm yyyy"),"")');
-  sheet.getRange(2, 3).setFormula('=IFERROR(INDEX(' + r + '!B2:B,MATCH(MAXIFS(' + r + '!A2:A,' + r + '!C2:C,A2),' + r + '!A2:A,0)),"")');
-  sheet.getRange(2, 4).setFormula('=IFERROR(INDEX(' + r + '!K2:K,MATCH(MAXIFS(' + r + '!A2:A,' + r + '!C2:C,A2),' + r + '!A2:A,0)),"")');
-  sheet.getRange(2, 5).setFormula('=IFERROR(COUNTIF(' + r + '!C2:C,A2),"")');
-  sheet.getRange(2, 6).setFormula('=IFERROR(AVERAGEIF(' + r + '!C2:C,A2,' + r + '!AE2:AE),"")');
-  sheet.getRange(2, 7).setFormula('=IFERROR(INDEX(' + r + '!I2:I,MATCH(MAXIFS(' + r + '!A2:A,' + r + '!C2:C,A2),' + r + '!A2:A,0)),"")');
+  sheet.getRange(2, 1).setFormula('=IFERROR(SORT(UNIQUE(FILTER(' + r + '!C2:C,' + r + '!C2:C<>""))),"")');
+  sheet.getRange(2, 2).setFormula('=MAP(A2:A,LAMBDA(apt,IF(apt="",,IFERROR(INDEX(SORT(FILTER({' + r + '!A2:A},' + r + '!C2:C=apt),1,FALSE),1,1),""))))');
+  sheet.getRange(2, 3).setFormula('=MAP(A2:A,LAMBDA(apt,IF(apt="",,IFERROR(INDEX(SORT(FILTER({' + r + '!A2:A,' + r + '!B2:B},' + r + '!C2:C=apt),1,FALSE),1,2),""))))');
+  sheet.getRange(2, 4).setFormula('=MAP(A2:A,LAMBDA(apt,IF(apt="",,IFERROR(INDEX(SORT(FILTER({' + r + '!A2:A,' + r + '!K2:K},' + r + '!C2:C=apt),1,FALSE),1,2),""))))');
+  sheet.getRange(2, 5).setFormula('=ARRAYFORMULA(IF(A2:A="",,COUNTIF(' + r + '!C2:C,A2:A)))');
+  sheet.getRange(2, 6).setFormula('=ARRAYFORMULA(IF(A2:A="",,IFERROR(AVERAGEIF(' + r + '!C2:C,A2:A,' + r + '!AE2:AE),"")))');
+  sheet.getRange(2, 7).setFormula('=MAP(A2:A,LAMBDA(apt,IF(apt="",,IFERROR(INDEX(SORT(FILTER({' + r + '!A2:A,' + r + '!I2:I},' + r + '!C2:C=apt),1,FALSE),1,2),""))))');
   sheet.setColumnWidths(1, hdrs.length, 180);
   sheet.setFrozenRows(1);
 }
