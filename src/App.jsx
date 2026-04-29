@@ -64,6 +64,7 @@ export default function App() {
         // retry next time online
       }
     };
+    trySendPending();
     window.addEventListener('online', trySendPending);
     return () => window.removeEventListener('online', trySendPending);
   }, []);
