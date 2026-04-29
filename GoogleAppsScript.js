@@ -13,6 +13,7 @@
  */
 
 var SHEET_NAME_RAW = 'Raw Submissions';
+var SPREADSHEET_ID = '1h_L-GPYn-Ao6UcAJ8u9CufG6TQVmfsDZsNxGDJgOABM';
 
 var HEADERS = [
   'Timestamp',
@@ -52,7 +53,7 @@ var HEADERS = [
 function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = getOrCreateSheet(ss, SHEET_NAME_RAW);
 
     var row = [
@@ -147,7 +148,7 @@ function toNum(val) {
 }
 
 function setupAllSheets() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   getOrCreateSheet(ss, SHEET_NAME_RAW);
   setupDashboard(ss);
   setupAgentSummary(ss);
