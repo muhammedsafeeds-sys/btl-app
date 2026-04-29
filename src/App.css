@@ -2,13 +2,13 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --brand: #1a56db;
-  --brand-dark: #1040b0;
-  --surface: #f7f8fc;
+  --brand: #22c55e;
+  --brand-dark: #15803d;
+  --surface: #f0fdf4;
   --card: #ffffff;
-  --border: #e2e6f0;
-  --text: #1a1f36;
-  --muted: #6b7280;
+  --border: #bbf7d0;
+  --text: #17351f;
+  --muted: #52635a;
   --success: #16a34a;
   --danger: #dc2626;
   --warn: #d97706;
@@ -37,7 +37,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 8px rgba(26,86,219,.25);
+  box-shadow: 0 2px 8px rgba(34,197,94,.24);
 }
 .header-content { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .app-title { font-size: 1.2rem; font-weight: 700; letter-spacing: -.3px; }
@@ -130,7 +130,7 @@ body {
   transition: border-color .15s;
   -webkit-appearance: none;
 }
-.field-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(26,86,219,.12); }
+.field-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(34,197,94,.16); }
 .field-input::placeholder { color: #b0b8cc; }
 
 /* ── Two-column row ── */
@@ -138,8 +138,8 @@ body {
 
 /* ── GPS box ── */
 .gps-box {
-  background: #f0f4ff;
-  border: 1.5px dashed #a5b4fc;
+  background: #ecfdf5;
+  border: 1.5px dashed #86efac;
   border-radius: 10px;
   padding: 18px;
   margin-bottom: 14px;
@@ -148,7 +148,7 @@ body {
 .gps-loading { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--brand); font-weight: 500; }
 .spinner {
   width: 20px; height: 20px;
-  border: 3px solid #c7d2fe;
+  border: 3px solid #bbf7d0;
   border-top-color: var(--brand);
   border-radius: 50%;
   animation: spin .7s linear infinite;
@@ -238,7 +238,7 @@ body {
 }
 .price-input::-webkit-outer-spin-button,
 .price-input::-webkit-inner-spin-button { -webkit-appearance: none; }
-.price-input:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 3px rgba(26,86,219,.12); }
+.price-input:focus { border-color: var(--brand); outline: none; box-shadow: 0 0 0 3px rgba(34,197,94,.16); }
 
 /* ── Chair/Table row ── */
 .chair-table-row {
@@ -298,7 +298,7 @@ body {
   border-radius: 12px;
   cursor: pointer;
   transition: background .15s, transform .1s;
-  box-shadow: 0 4px 14px rgba(26,86,219,.3);
+  box-shadow: 0 4px 14px rgba(34,197,94,.28);
 }
 .btn-submit:active { background: var(--brand-dark); transform: scale(.98); }
 .btn-submit:disabled { opacity: .65; cursor: not-allowed; transform: none; }

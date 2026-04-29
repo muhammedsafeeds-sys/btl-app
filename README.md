@@ -1,4 +1,4 @@
-# BTL Data Collection App
+# Buloke BTL Data Collection App
 
 Mobile-first form for field agents to log apartment BTL channel data.  
 Data flows: React form → Google Apps Script → Google Sheets (4 tabs).

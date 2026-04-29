@@ -21,7 +21,7 @@ function emptyForm(agentName = '') {
     agentName,
     property: { apartmentName: '', possessionYear: '', resaleValue: '', numHouses: '' },
     location: { locality: '', zone: '', pinCode: '' },
-    contact: { contactPerson: '', phone: '', email: '', bankDetails: '' },
+    contact: { contactPerson: '', phone: '', email: '', bankAccountNo: '', ifsc: '', bankName: '' },
     btl: {
       prices: Object.fromEntries(CHANNELS_KEYS.map((k) => [k, ''])),
       chairTable: '',
@@ -127,7 +127,9 @@ export default function App() {
       contactPerson: form.contact.contactPerson,
       phone: form.contact.phone,
       email: form.contact.email,
-      bankDetails: form.contact.bankDetails,
+      bankAccountNo: form.contact.bankAccountNo,
+      ifsc: form.contact.ifsc,
+      bankName: form.contact.bankName,
       noticeBoard: form.btl.prices.noticeBoard,
       whatsapp: form.btl.prices.whatsapp,
       mygate: form.btl.prices.mygate,
@@ -189,7 +191,7 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-content">
-          <h1 className="app-title">BTL Data Collection</h1>
+          <h1 className="app-title">Buloke BTL Data Collection</h1>
           {pendingCount > 0 && (
             <div className="pending-badge">
               🕐 {pendingCount} Draft{pendingCount > 1 ? 's' : ''} Pending

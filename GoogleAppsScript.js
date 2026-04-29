@@ -1,5 +1,5 @@
 /**
- * BTL Data Collection - Google Apps Script
+ * Buloke BTL Data Collection - Google Apps Script
  *
  * HOW TO DEPLOY:
  * 1. Open your Google Sheet
@@ -30,7 +30,9 @@ var HEADERS = [
   'Contact Person',
   'Phone Number',
   'Email',
-  'Bank Account Details',
+  'Bank Account No',
+  'IFSC Code',
+  'Bank Name',
   'Notice Board (Rs)',
   'WhatsApp / Adda (Rs)',
   'MyGate / NBH (Rs)',
@@ -69,7 +71,9 @@ function doPost(e) {
       data.contactPerson || '',
       data.phone || '',
       data.email || '',
-      data.bankDetails || '',
+      data.bankAccountNo || '',
+      data.ifsc || '',
+      data.bankName || '',
       toNum(data.noticeBoard),
       toNum(data.whatsapp),
       toNum(data.mygate),
@@ -111,16 +115,16 @@ function getOrCreateSheet(ss, name) {
   var sheet = ss.getSheetByName(name);
   if (!sheet) {
     sheet = ss.insertSheet(name);
-    var headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
-    headerRange.setValues([HEADERS]);
-    headerRange.setFontWeight('bold');
-    headerRange.setBackground('#1a56db');
-    headerRange.setFontColor('#ffffff');
-    sheet.setFrozenRows(1);
-    sheet.setColumnWidths(1, HEADERS.length, 160);
-    sheet.setColumnWidth(9, 220);
-    sheet.setColumnWidth(30, 300);
   }
+  var headerRange = sheet.getRange(1, 1, 1, HEADERS.length);
+  headerRange.setValues([HEADERS]);
+  headerRange.setFontWeight('bold');
+  headerRange.setBackground('#22c55e');
+  headerRange.setFontColor('#ffffff');
+  sheet.setFrozenRows(1);
+  sheet.setColumnWidths(1, HEADERS.length, 160);
+  sheet.setColumnWidth(9, 220);
+  sheet.setColumnWidth(32, 300);
   return sheet;
 }
 
@@ -162,9 +166,9 @@ function setupDashboard(ss) {
   rows.push(['METRIC', 'VALUE']);
   rows.push(['Total Apartments Visited', '=COUNTA(' + r + '!C2:C)']);
   rows.push(['Visits Today', '=COUNTIFS(' + r + '!A2:A,">="&TODAY(),' + r + '!A2:A,"<"&(TODAY()+1))']);
-  rows.push(['Avg Quoted per Visit (Rs)', '=IFERROR(AVERAGE(' + r + '!AC2:AC),0)']);
-  rows.push(['Highest Quoted Price (Rs)', '=IFERROR(MAX(' + r + '!AC2:AC),0)']);
-  rows.push(['Apartment with Highest Quote', '=IFERROR(INDEX(' + r + '!C2:C,MATCH(MAX(' + r + '!AC2:AC),' + r + '!AC2:AC,0)),"-")']);
+  rows.push(['Avg Quoted per Visit (Rs)', '=IFERROR(AVERAGE(' + r + '!AE2:AE),0)']);
+  rows.push(['Highest Quoted Price (Rs)', '=IFERROR(MAX(' + r + '!AE2:AE),0)']);
+  rows.push(['Apartment with Highest Quote', '=IFERROR(INDEX(' + r + '!C2:C,MATCH(MAX(' + r + '!AE2:AE),' + r + '!AE2:AE,0)),"-")']);
   rows.push(['', '']);
   rows.push(['ZONE', 'VISITS']);
   rows.push(['North',   '=COUNTIF(' + r + '!K2:K,"North")']);
@@ -174,18 +178,18 @@ function setupDashboard(ss) {
   rows.push(['Central', '=COUNTIF(' + r + '!K2:K,"Central")']);
   rows.push(['', '']);
   rows.push(['CHANNEL', 'ENTRIES WITH PRICE > 0']);
-  rows.push(['Notice Board',    '=COUNTIF(' + r + '!Q2:Q,">"&0)']);
-  rows.push(['WhatsApp / Adda', '=COUNTIF(' + r + '!R2:R,">"&0)']);
-  rows.push(['MyGate / NBH',    '=COUNTIF(' + r + '!S2:S,">"&0)']);
-  rows.push(['Standee',         '=COUNTIF(' + r + '!T2:T,">"&0)']);
-  rows.push(['Banner',          '=COUNTIF(' + r + '!U2:U,">"&0)']);
-  rows.push(['Flyer',           '=COUNTIF(' + r + '!V2:V,">"&0)']);
-  rows.push(['Email Marketing', '=COUNTIF(' + r + '!W2:W,">"&0)']);
-  rows.push(['Digital Screen',  '=COUNTIF(' + r + '!X2:X,">"&0)']);
-  rows.push(['Telegram',        '=COUNTIF(' + r + '!Y2:Y,">"&0)']);
-  rows.push(['AdOnMo',          '=COUNTIF(' + r + '!Z2:Z,">"&0)']);
-  rows.push(['Stall',           '=COUNTIF(' + r + '!AA2:AA,">"&0)']);
-  rows.push(['Chair / Table (YES)', '=COUNTIF(' + r + '!AB2:AB,"YES")']);
+  rows.push(['Notice Board',    '=COUNTIF(' + r + '!S2:S,">"&0)']);
+  rows.push(['WhatsApp / Adda', '=COUNTIF(' + r + '!T2:T,">"&0)']);
+  rows.push(['MyGate / NBH',    '=COUNTIF(' + r + '!U2:U,">"&0)']);
+  rows.push(['Standee',         '=COUNTIF(' + r + '!V2:V,">"&0)']);
+  rows.push(['Banner',          '=COUNTIF(' + r + '!W2:W,">"&0)']);
+  rows.push(['Flyer',           '=COUNTIF(' + r + '!X2:X,">"&0)']);
+  rows.push(['Email Marketing', '=COUNTIF(' + r + '!Y2:Y,">"&0)']);
+  rows.push(['Digital Screen',  '=COUNTIF(' + r + '!Z2:Z,">"&0)']);
+  rows.push(['Telegram',        '=COUNTIF(' + r + '!AA2:AA,">"&0)']);
+  rows.push(['AdOnMo',          '=COUNTIF(' + r + '!AB2:AB,">"&0)']);
+  rows.push(['Stall',           '=COUNTIF(' + r + '!AC2:AC,">"&0)']);
+  rows.push(['Chair / Table (YES)', '=COUNTIF(' + r + '!AD2:AD,"YES")']);
 
   sheet.getRange(1, 1, rows.length, 2).setValues(rows);
   styleRow(sheet, 1);
@@ -227,7 +231,7 @@ function setupApartmentMaster(ss) {
   sheet.getRange(2, 3).setFormula('=IFERROR(INDEX(' + r + '!B2:B,MATCH(MAXIFS(' + r + '!A2:A,' + r + '!C2:C,A2),' + r + '!A2:A,0)),"")');
   sheet.getRange(2, 4).setFormula('=IFERROR(INDEX(' + r + '!K2:K,MATCH(MAXIFS(' + r + '!A2:A,' + r + '!C2:C,A2),' + r + '!A2:A,0)),"")');
   sheet.getRange(2, 5).setFormula('=IFERROR(COUNTIF(' + r + '!C2:C,A2),"")');
-  sheet.getRange(2, 6).setFormula('=IFERROR(AVERAGEIF(' + r + '!C2:C,A2,' + r + '!AC2:AC),"")');
+  sheet.getRange(2, 6).setFormula('=IFERROR(AVERAGEIF(' + r + '!C2:C,A2,' + r + '!AE2:AE),"")');
   sheet.getRange(2, 7).setFormula('=IFERROR(INDEX(' + r + '!I2:I,MATCH(MAXIFS(' + r + '!A2:A,' + r + '!C2:C,A2),' + r + '!A2:A,0)),"")');
   sheet.setColumnWidths(1, hdrs.length, 180);
   sheet.setFrozenRows(1);
@@ -236,6 +240,6 @@ function setupApartmentMaster(ss) {
 function styleRow(sheet, rowNum) {
   var range = sheet.getRange(rowNum, 1, 1, 2);
   range.setFontWeight('bold');
-  range.setBackground('#1a56db');
+  range.setBackground('#22c55e');
   range.setFontColor('#ffffff');
 }

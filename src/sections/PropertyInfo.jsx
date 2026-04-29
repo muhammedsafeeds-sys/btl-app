@@ -1,4 +1,5 @@
-const years = Array.from({ length: 21 }, (_, i) => 2015 + i);
+const currentYear = new Date().getFullYear();
+const years = Array.from({ length: currentYear - 1970 + 11 }, (_, i) => 1970 + i);
 
 export default function PropertyInfo({ data, onChange }) {
   return (
