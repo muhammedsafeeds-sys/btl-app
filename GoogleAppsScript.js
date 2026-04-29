@@ -121,7 +121,7 @@ function getOrCreateSheet(ss, name) {
   headerRange.setValues([HEADERS]);
   headerRange.setFontWeight('bold');
   headerRange.setBackground('#22c55e');
-  headerRange.setFontColor('#ffffff');
+  headerRange.setFontColor('#000000');
   sheet.setFrozenRows(1);
   sheet.setColumnWidths(1, HEADERS.length, 160);
   sheet.setColumnWidth(9, 220);
@@ -242,5 +242,5 @@ function styleRow(sheet, rowNum) {
   var range = sheet.getRange(rowNum, 1, 1, 2);
   range.setFontWeight('bold');
   range.setBackground('#22c55e');
-  range.setFontColor('#ffffff');
+  range.setFontColor('#000000');
 }

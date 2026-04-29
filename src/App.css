@@ -32,7 +32,7 @@ body {
 /* ── Header ── */
 .app-header {
   background: var(--brand);
-  color: #fff;
+  color: #000;
   padding: 16px 20px;
   position: sticky;
   top: 0;
@@ -42,9 +42,9 @@ body {
 .header-content { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .app-title { font-size: 1.2rem; font-weight: 700; letter-spacing: -.3px; }
 .pending-badge {
-  background: rgba(255,255,255,.2);
-  border: 1px solid rgba(255,255,255,.4);
-  color: #fff;
+  background: rgba(255,255,255,.35);
+  border: 1px solid rgba(0,0,0,.18);
+  color: #000;
   font-size: .78rem;
   font-weight: 600;
   padding: 4px 10px;
